@@ -1,0 +1,72 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <time.h>
+#include <string.h>
+
+#define NUMERO_MAXIMO 90
+#define TAMANHO_CARTAO 15
+
+int main() {
+    int numerosSorteados[NUMERO_MAXIMO] = {0};
+    int numerosCartao[TAMANHO_CARTAO] = {0};
+    int numerosSorteadosCount = 0;
+
+    srand(time(NULL));
+
+    printf("Gerando seu cartao de Bingo...\n");
+    for (int i = 0; i < TAMANHO_CARTAO; i++) {
+        int numeroAleatorio;
+        do {
+            numeroAleatorio = (rand() % NUMERO_MAXIMO) + 1;
+        } while (numerosCartao[i] != 0);
+        numerosCartao[i] = numeroAleatorio;
+    }
+
+    for (int i = 0; i < TAMANHO_CARTAO - 1; i++) {
+        for (int j = i + 1; j < TAMANHO_CARTAO; j++) {
+            if (numerosCartao[i] > numerosCartao[j]) {
+                int temp = numerosCartao[i];
+                numerosCartao[i] = numerosCartao[j];
+                numerosCartao[j] = temp;
+            }
+        }
+    }
+
+    printf("Seu cartao de Bingo:\n");
+    for (int i = 0; i < TAMANHO_CARTAO; i++) {
+        printf("%d ", numerosCartao[i]);
+    }
+    printf("\n");
+
+    printf("Pressione ENTER para iniciar o jogo do Bingo...");
+    getchar();
+
+    while (1) {
+        int numeroSorteado;
+        do {
+            numeroSorteado = (rand() % NUMERO_MAXIMO) + 1;
+        } while (numerosSorteados[numeroSorteado - 1] != 0);
+
+        numerosSorteados[numeroSorteado - 1] = 1;
+        numerosSorteadosCount++;
+
+        printf("Números sorteados (%d de 90): ", numerosSorteadosCount);
+        for (int i = 0; i < NUMERO_MAXIMO; i++) {
+            if (numerosSorteados[i] != 0) {
+                printf("%d ", i + 1);
+            }
+        }
+        printf("\n");
+
+        char entrada[10];
+        printf("Digite 'BINGO' para parar o jogo ou pressione ENTER para continuar: ");
+        fgets(entrada, sizeof(entrada), stdin);
+        if (strcmp(entrada, "BINGO\n") == 0) {
+            break;
+        }
+    }
+
+    printf("Fim do jogo do Bingo!\n");
+
+    return 0;
+}
