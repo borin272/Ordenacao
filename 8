@@ -1,0 +1,33 @@
+#include <stdio.h>
+
+#define NUM_PESSOAS 20
+#define REAJUSTE 0.08 // 8% de reajuste
+
+int main() {
+    char nomes[NUM_PESSOAS][50];
+    float salarios[NUM_PESSOAS];
+    float novosSalarios[NUM_PESSOAS];
+
+    // Preencher dados das pessoas
+    for (int i = 0; i < NUM_PESSOAS; i++) {
+        printf("Digite o nome da pessoa %d: ", i + 1);
+        scanf("%s", nomes[i]);
+        printf("Digite o salário da pessoa %d: ", i + 1);
+        scanf("%f", &salarios[i]);
+
+        // Calcular o novo salário com reajuste
+        novosSalarios[i] = salarios[i] * (1 + REAJUSTE);
+    }
+
+    // Imprimir listagem numerada
+    printf("\nListagem de Pessoas com Novos Salários:\n");
+    printf("---------------------------------------------\n");
+    printf("Nº\tNome\t\tNovo Salário\n");
+    printf("---------------------------------------------\n");
+
+    for (int i = 0; i < NUM_PESSOAS; i++) {
+        printf("%d\t%s\t\t%.2f\n", i + 1, nomes[i], novosSalarios[i]);
+    }
+
+    return 0;
+}
