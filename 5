@@ -1,0 +1,107 @@
+#include <stdio.h>
+#include <string.h>
+
+#define MAX_CANDIDATOS 100
+
+int main() {
+    char nomes[MAX_CANDIDATOS][50];
+    float notas[MAX_CANDIDATOS];
+    int numCandidatos = 0;
+    float somaNotas = 0;
+
+    while (1) {
+        printf("\nMenu de Opções:\n");
+        printf("1. Ler notas e nomes de candidatos\n");
+        printf("2. Exibir média geral de todos os candidatos\n");
+        printf("3. Exibir lista de candidatos em ordem decrescente de nota\n");
+        printf("4. Buscar candidato pelo nome\n");
+        printf("5. Sair\n");
+        printf("Escolha uma opção: ");
+
+        int opcao;
+        scanf("%d", &opcao);
+
+        switch (opcao) {
+            case 1:
+                if (numCandidatos < MAX_CANDIDATOS) {
+                    printf("Digite o nome do candidato: ");
+                    scanf("%s", nomes[numCandidatos]);
+                    printf("Digite a nota do candidato: ");
+                    scanf("%f", &notas[numCandidatos]);
+                    somaNotas += notas[numCandidatos];
+                    numCandidatos++;
+                } else {
+                    printf("Limite de candidatos atingido (100 candidatos).\n");
+                }
+                break;
+
+            case 2:
+                if (numCandidatos > 0) {
+                    float mediaGeral = somaNotas / numCandidatos;
+                    printf("Média geral de todos os candidatos: %.2f\n", mediaGeral);
+                } else {
+                    printf("Nenhum candidato cadastrado.\n");
+                }
+                break;
+
+            case 3:
+                if (numCandidatos > 0) {
+                    for (int i = 0; i < numCandidatos - 1; i++) {
+                        for (int j = i + 1; j < numCandidatos; j++) {
+                            if (notas[i] < notas[j]) {
+                                char tempNome[50];
+                                strcpy(tempNome, nomes[i]);
+                                strcpy(nomes[i], nomes[j]);
+                                strcpy(nomes[j], tempNome);
+
+                                float tempNota = notas[i];
+                                notas[i] = notas[j];
+                                notas[j] = tempNota;
+                            }
+                        }
+                    }
+
+                    printf("Lista de candidatos em ordem decrescente de nota:\n");
+                    for (int i = 0; i < numCandidatos; i++) {
+                        printf("Nome: %s, Nota: %.2f\n", nomes[i], notas[i]);
+                    }
+                } else {
+                    printf("Nenhum candidato cadastrado.\n");
+                }
+                break;
+
+            case 4:
+                if (numCandidatos > 0) {
+                    char nomeBusca[50];
+                    int encontrado = 0;
+
+                    printf("Digite o nome do candidato a ser buscado: ");
+                    scanf("%s", nomeBusca);
+
+                    for (int i = 0; i < numCandidatos; i++) {
+                        if (strcmp(nomes[i], nomeBusca) == 0) {
+                            printf("Nome: %s, Nota: %.2f\n", nomes[i], notas[i]);
+                            encontrado = 1;
+                            break;
+                        }
+                    }
+
+                    if (!encontrado) {
+                        printf("Candidato não encontrado.\n");
+                    }
+                } else {
+                    printf("Nenhum candidato cadastrado.\n");
+                }
+                break;
+
+            case 5:
+                printf("Encerrando o programa.\n");
+                return 0;
+
+            default:
+                printf("Opção inválida. Tente novamente.\n");
+        }
+    }
+
+    return 0;
+}
